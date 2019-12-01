@@ -58,7 +58,7 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
     VectorXd h = VectorXd(3);
     h(0) = sqrt(px * px + py*py);
 
-    if (fabs(h(0)) < 0.3) {
+    if (fabs(h(0)) < 0.0001) {
         return;
     }else{
     h(1) = atan2(py, px);

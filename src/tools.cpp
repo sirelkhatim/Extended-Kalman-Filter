@@ -50,7 +50,7 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
     float c2 = sqrt(c1);
     float c3 = sqrt(c1*c2);
     // check division by zero
-    if (fabs(c1) < 1.5) {
+    if (fabs(c1) < 0.0001) {
     return Hj;
     }
 

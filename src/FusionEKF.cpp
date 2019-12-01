@@ -54,7 +54,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
    */
   if (!is_initialized_) {
 
-
+     previous_timestamp_ = measurement_pack.timestamp_;
     // first measurement
     cout << "EKF: " << endl;
     ekf_.x_ = VectorXd(4);
@@ -77,6 +77,12 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
         ekf_.x_(1) = ro * sin(theta);
         ekf_.x_(2) = ro_theta * cos(theta);
         ekf_.x_(3) = ro_theta * sin(theta);
+        if ( ekf_.x_(0) < 0.0001 ) {
+                ekf_.x_(0) = 0.0001;
+              }
+        if (ekf_.x_(1) < 0.0001){
+            ekf_.x_(1) = 0.0001;
+         }
     }
     else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
         ekf_.x_(0) = measurement_pack.raw_measurements_(0);
@@ -86,8 +92,10 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 
     }
 
+
+
     // done initializing, no need to predict or update
-    previous_timestamp_ = measurement_pack.timestamp_;
+
     is_initialized_ = true;
     return;
   }
